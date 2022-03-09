@@ -53,6 +53,8 @@ import sys
 import enchant
 from time import time
 
+from sklearn.datasets import make_hastie_10_2
+
 __version__ = "1.0"
 
 
@@ -303,13 +305,15 @@ def main():
     t0 = time()
     print("Ciphertext", "\t", ciphertext)
     d = enchant.Dict("en_GB")
+    counter = 0
     #Run for every combination
-    for x in range (0, 17576):
+    while(counter <= 17576):
         plaintext = ""
         #encode each char
         for character in ciphertext:
             plaintext += machine.encode(character)
         valid = True
+        
         #check if each word in the plain text is english
         for word in plaintext.split():
             if(not d.check(word)):
@@ -321,6 +325,21 @@ def main():
             print('Brute force took {:.2f} seconds'.format(time()-t0))
             machine.print_setup()
             break
+        else:
+            counter += 1
+            machine.reset()
+            for x in range(0, counter):
+                machine.rotors[0].rotate()
+
+                # Double step
+                if machine.rotors[1].base[0] in machine.rotors[1].notch:
+                    machine.rotors[1].rotate()
+
+                # Normal stepping
+                for i in range(len(machine.rotors) - 1):
+                    if(machine.rotors[i].turnover):
+                        machine.rotors[i].turnover = False
+                        machine.rotors[i + 1].rotate()
     else:
         print("Not found")
 

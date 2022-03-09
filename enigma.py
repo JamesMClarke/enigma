@@ -71,7 +71,7 @@ class Enigma:
         self.rotors = []
 
         # Settings for the machine
-        self.rotorsettings = [('III', 1), ('II', 11), ('I', 13)]
+        self.rotorsettings = [('III', 0), ('II', 0), ('I', 0)]
         self.reflectorsetting = "B"
         self.plugboardsetting = []
 
