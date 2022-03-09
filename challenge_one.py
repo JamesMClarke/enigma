@@ -303,12 +303,8 @@ def main():
     t0 = time()
     print("Ciphertext", "\t", ciphertext)
     d = enchant.Dict("en_GB")
-    found = False
-    #Set all rotors to 0
-    rotor1, rotor2, rotor3 = 0,0,0
-    run = 0
-    for x in range (0, 17576*2):
-        run += 1
+    #Run for every combination
+    for x in range (0, 17576):
         plaintext = ""
         #encode each char
         for character in ciphertext:
@@ -319,14 +315,12 @@ def main():
             if(not d.check(word)):
                 valid = False
 
-        #if it is english print plaintext  and the rotor settings
+        #if it is english print plaintext and the rotor settings
         if(valid):
             print("Plaintext", "\t", plaintext)
             print('Brute force took {:.2f} seconds'.format(time()-t0))
             machine.print_setup()
-            print(run)
             break
-        #else advance the rotor settings
     else:
         print("Not found")
 
